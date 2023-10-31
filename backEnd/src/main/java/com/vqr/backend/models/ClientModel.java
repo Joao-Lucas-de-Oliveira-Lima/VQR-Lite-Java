@@ -1,4 +1,29 @@
 package com.vqr.backend.models;
 
-public interface ClientModel {
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.stereotype.Component;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.UUID;
+
+
+@Entity
+@Table(name = "Clients")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Component
+public class ClientModel implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    private String name;
+
+    //todo:relação com a tabela eventos
 }
