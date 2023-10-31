@@ -25,4 +25,6 @@ public class ClientModelImpl implements ClientModel, Serializable {
     private UUID id;
     private String name;
     private String cpf;
+    
+    //todo:relação com a tabela eventos
 }
