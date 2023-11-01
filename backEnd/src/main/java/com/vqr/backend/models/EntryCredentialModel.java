@@ -35,7 +35,7 @@ public class EntryCredentialModel implements Serializable {
     private BigDecimal entryCredentialCost;
     private PaymentEnum paymentMethod;
 
-    public EntryCredentialModel(int entryCredentialNumber){
+    public EntryCredentialModel(int entryCredentialNumber) {
         this.entryCredentialNumber = entryCredentialNumber;
         this.isAvailable = false;
         this.tailPuller = "None";
@@ -46,5 +46,6 @@ public class EntryCredentialModel implements Serializable {
         this.hasBullTv = false;
         this.entryCredentialCost = new BigDecimal("00.00");
         this.paymentMethod = PaymentEnum.NONE;
+
     }
 }
