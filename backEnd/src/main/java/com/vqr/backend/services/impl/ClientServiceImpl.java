@@ -9,18 +9,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ClientServiceImpl implements ClientService {
-
     private final ClientRepository clientRepository;
 
     public ClientServiceImpl(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
-    public ResponseEntity<ClientModel> saveClient(ClientDto clientData){
-        var clientToSave = new ClientModel();
+    public ClientModel saveClient(ClientDto clientData) {
+        ClientModel clientToSave = new ClientModel();
         BeanUtils.copyProperties(clientData, clientToSave);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientRepository.save(clientToSave));
+        return clientRepository.save(clientToSave);
+    }
+
+    public List<ClientModel> findAllClientsByName(String name) {
+        return clientRepository.findAllByName(name);
     }
 }
