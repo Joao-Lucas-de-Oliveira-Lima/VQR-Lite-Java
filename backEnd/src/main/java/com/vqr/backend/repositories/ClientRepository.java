@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface ClientRepository extends JpaRepository<ClientModel, UUID> {
 
-    List<ClientModel> findAllByName(String name);
+    List<ClientModel> findAllByNameContainingIgnoreCase(String name);
 
 }

@@ -27,6 +27,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public List<ClientModel> findAllClientsByName(String name) {
-        return clientRepository.findAllByName(name);
+        return clientRepository.findAllByNameContainingIgnoreCase(name);
     }
 }
