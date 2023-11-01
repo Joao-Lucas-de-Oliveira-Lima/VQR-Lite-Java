@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 //Expressão regular provisória
-public record ClientDto
-        (@NotBlank @Pattern(regexp = "^([a-zA-Z].+)$") String name,
-         @Email String email,
-         String phoneNumber) { }
+public record ClientDto(
+        @NotBlank @Pattern(regexp = "^([a-zA-Z].+)$") String name,
+        @Email String email,
+        String phoneNumber) { }
