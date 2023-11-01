@@ -2,8 +2,6 @@ package com.vqr.backend.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
@@ -16,7 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Component
 public class ClientModel implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -24,6 +21,8 @@ public class ClientModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
+    private String email;
+    private String phoneNumber;
 
     //todo:relação com a tabela eventos
 }

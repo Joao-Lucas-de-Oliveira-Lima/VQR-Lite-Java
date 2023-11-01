@@ -22,4 +22,5 @@ public class ClientController {
     public ClientController(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
+
 }
