@@ -7,6 +7,8 @@ import com.vqr.backend.services.ClientService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -22,7 +24,14 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(clientToSave);
     }
 
-    public List<ClientModel> findAllClientsByName(String name) {
-        return clientRepository.findAllByNameContainingIgnoreCase(name);
+    public Optional<ClientModel> findClientById(UUID id){
+        return clientRepository.findById(id);
+    }
+
+    public List<ClientModel> findClients(String name) {
+        if(name != null){
+            return clientRepository.findAllByNameContainingIgnoreCase(name);
+        }
+        return clientRepository.findAll();
     }
 }

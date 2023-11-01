@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class ClientController {
@@ -26,13 +28,23 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping("/clients")
-    public ResponseEntity<List<ClientModel>> findAllClientsByName(
-            @RequestParam(value = "name") String name){
-        List<ClientModel> result = clientService.findAllClientsByName(name);
+    @GetMapping("/clients/{id}")
+    public ResponseEntity<Object> finClientById(@PathVariable(value = "id") UUID id){
+        Optional<ClientModel> result = clientService.findClientById(id);
         if(result.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result.get());
     }
+
+    @GetMapping("/clients")
+    public ResponseEntity<List<ClientModel>> findClients(
+            @RequestParam(value = "name", required = false) String name){
+        List<ClientModel> result = clientService.findClients(name);
+        if(result.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
 }

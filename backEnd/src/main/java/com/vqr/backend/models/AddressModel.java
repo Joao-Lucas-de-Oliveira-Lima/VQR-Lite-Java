@@ -11,7 +11,7 @@ public class AddressModel {
     private String municipality;
     private String state;
 
-    public AddressModel(String municipality, String state){
+    public AddressModel(String municipality, String state) {
         this.municipality = municipality;
         this.state = state;
     }
