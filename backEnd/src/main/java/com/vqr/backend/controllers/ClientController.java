@@ -1,6 +1,8 @@
 package com.vqr.backend.controllers;
 
-import com.vqr.backend.dtos.ClientDto;
+import com.vqr.backend.dtos.clients.ClientPatchDto;
+import com.vqr.backend.dtos.clients.ClientPostDto;
+import com.vqr.backend.dtos.clients.ClientResponseDto;
 import com.vqr.backend.models.ClientModel;
 import com.vqr.backend.services.ClientService;
 import jakarta.validation.Valid;
@@ -23,21 +25,22 @@ public class ClientController {
     }
 
     @PostMapping("/clients")
-    public ResponseEntity<ClientModel> saveNewClient(@RequestBody @Valid ClientDto clientData){
-        ClientModel result = clientService.saveClient(clientData);
+    public ResponseEntity<ClientResponseDto> saveNewClient(@RequestBody @Valid ClientPostDto clientData){
+        ClientResponseDto result = clientService.saveNewClient(clientData);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/clients/{id}")
     public ResponseEntity<Object> finClientById(@PathVariable(value = "id") UUID id){
-        Optional<ClientModel> result = clientService.findClientById(id);
+        Optional<ClientResponseDto> result = clientService.findClientById(id);
         if(result.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(result.get());
     }
 
-    @GetMapping("/clients")
+    /*
+     @GetMapping("/clients")
     public ResponseEntity<List<ClientModel>> findClients(
             @RequestParam(value = "name", required = false) String name){
         List<ClientModel> result = clientService.findClients(name);
@@ -46,5 +49,6 @@ public class ClientController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+     */
 
 }

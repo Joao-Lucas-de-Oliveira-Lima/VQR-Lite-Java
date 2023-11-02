@@ -1,6 +1,7 @@
 package com.vqr.backend.services;
 
-import com.vqr.backend.dtos.ClientDto;
+import com.vqr.backend.dtos.clients.ClientResponseDto;
+import com.vqr.backend.dtos.clients.ClientPostDto;
 import com.vqr.backend.models.ClientModel;
 
 import java.util.List;
@@ -8,9 +9,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ClientService {
-    ClientModel saveClient(ClientDto clientData);
+    ClientResponseDto saveNewClient(ClientPostDto clientData);
 
-    Optional<ClientModel> findClientById(UUID id);
+    Optional<ClientResponseDto> findClientById(UUID id);
 
-    List<ClientModel> findClients(String name);
+    //List<ClientResponseDto> findClients(String name);
+
 }
