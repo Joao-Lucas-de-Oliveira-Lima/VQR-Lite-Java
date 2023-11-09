@@ -1,6 +1,9 @@
 package com.vqr.backend.controllers;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/events")
-public class EventController { }
+public class EventController {
+
+}
