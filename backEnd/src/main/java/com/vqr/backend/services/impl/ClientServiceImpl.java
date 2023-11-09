@@ -1,13 +1,14 @@
 package com.vqr.backend.services.impl;
 
-import com.vqr.backend.dtos.clients.ClientResponseDto;
 import com.vqr.backend.dtos.clients.ClientPatchDto;
+import com.vqr.backend.dtos.clients.ClientResponseDto;
 import com.vqr.backend.dtos.clients.ClientPostDto;
 import com.vqr.backend.models.ClientModel;
 import com.vqr.backend.repositories.ClientRepository;
 import com.vqr.backend.services.ClientService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
         ClientModel clientToSave = new ClientModel();
         BeanUtils.copyProperties(clientData, clientToSave);
         clientToSave = clientRepository.save(clientToSave);
-        return createDtoReponse(clientToSave);
+        return createDtoResponse(clientToSave);
     }
 
     public Optional<ClientResponseDto> findClientById(UUID id) {
@@ -32,25 +33,54 @@ public class ClientServiceImpl implements ClientService {
         if (clientToBeFound.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(createDtoReponse(clientToBeFound.get()));
+        return Optional.of(createDtoResponse(clientToBeFound.get()));
     }
 
     public List<ClientResponseDto> findClients(String name) {
         List<ClientModel> foundClients;
         if (name != null) {
             foundClients = clientRepository.findAllByNameContainingIgnoreCase(name);
+        }else{
+            foundClients = clientRepository.findAll();
         }
-        foundClients = clientRepository.findAll();
-        List<ResponseClientDto> found
+        List<ClientResponseDto> response = new ArrayList<>();
+        foundClients.forEach(client -> {
+            response.add(createDtoResponse(client));
+        });
+        return response;
     }
 
-    private static ClientResponseDto createDtoReponse(ClientModel clientData) {
-        ClientResponseDto response = new ClientResponseDto(
+    public Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData){
+        Optional<ClientModel> clientToBeModified = clientRepository.findById(id);
+        if(clientToBeModified.isEmpty()){
+            return Optional.empty();
+        }
+        if(clientData.name() != null){
+            clientToBeModified.get().setName(clientData.name());
+        }
+        if(clientData.email() != null){
+            clientToBeModified.get().setEmail(clientData.email());
+        }
+        if(clientData.phoneNumber() != null){
+            clientToBeModified.get().setPhoneNumber(clientData.phoneNumber());
+        }
+        return Optional.of(createDtoResponse(clientRepository.save(clientToBeModified.get())));
+    }
+
+    public Boolean deleteClient(UUID id){
+        Optional<ClientModel> clientToBeDeleted = clientRepository.findById(id);
+        if(clientToBeDeleted.isEmpty()){
+            return false;
+        }
+        clientRepository.deleteById(id);
+        return true;
+    }
+
+    private static ClientResponseDto createDtoResponse(ClientModel clientData) {
+        return new ClientResponseDto(
                 clientData.getId(),
                 clientData.getName(),
                 clientData.getEmail(),
                 clientData.getPhoneNumber());
-        return response;
     }
-
 }

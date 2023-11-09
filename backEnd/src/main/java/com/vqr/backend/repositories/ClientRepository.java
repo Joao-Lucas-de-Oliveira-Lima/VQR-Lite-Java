@@ -10,6 +10,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ClientRepository extends JpaRepository<ClientModel, UUID> {
-
     List<ClientModel> findAllByNameContainingIgnoreCase(String name);
 }

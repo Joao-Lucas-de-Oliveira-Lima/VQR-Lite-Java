@@ -1,5 +1,6 @@
 package com.vqr.backend.services;
 
+import com.vqr.backend.dtos.clients.ClientPatchDto;
 import com.vqr.backend.dtos.clients.ClientResponseDto;
 import com.vqr.backend.dtos.clients.ClientPostDto;
 import com.vqr.backend.models.ClientModel;
@@ -13,6 +14,9 @@ public interface ClientService {
 
     Optional<ClientResponseDto> findClientById(UUID id);
 
-    //List<ClientResponseDto> findClients(String name);
+    List<ClientResponseDto> findClients(String name);
 
+    Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData);
+
+    Boolean deleteClient(UUID id);
 }

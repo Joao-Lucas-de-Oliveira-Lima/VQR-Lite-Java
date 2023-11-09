@@ -22,6 +22,7 @@ public class ClientModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String phoneNumber;
 
