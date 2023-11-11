@@ -2,7 +2,10 @@ package com.vqr.backend.models;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
+//@NoArgsConstructor
 @ToString
 public class EventModel implements Serializable {
     @Serial
@@ -23,9 +26,21 @@ public class EventModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
-    private int numberOfInitialEventPasswords;
-    private int numberOfTotalEventPasswords;
-    private LocalDateTime dataAndTime;
+    private int numberOfInitialPasswords;
+    private int numberOfTotalPasswords;
+    private LocalDateTime beginDateTime;
     @Embedded
-    private Locality locality;
+    private Location location;
+
+    public EventModel(String name, int numberOfInitialEventPasswords, Location location) {
+        this.name = name;
+        this.numberOfInitialPasswords = numberOfInitialEventPasswords;
+        this.numberOfTotalPasswords = numberOfInitialEventPasswords;
+        this.beginDateTime = beginDateTime;
+        this.location = location;
+    }
+
+    public EventModel() {
+        this.location = new Location();
+    }
 }

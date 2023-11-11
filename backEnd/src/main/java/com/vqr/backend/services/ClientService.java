@@ -1,9 +1,8 @@
 package com.vqr.backend.services;
 
-import com.vqr.backend.dtos.clients.ClientPatchDto;
-import com.vqr.backend.dtos.clients.ClientResponseDto;
-import com.vqr.backend.dtos.clients.ClientPostDto;
-import com.vqr.backend.models.ClientModel;
+import com.vqr.backend.dtos.client.ClientPatchDto;
+import com.vqr.backend.dtos.client.ClientResponseDto;
+import com.vqr.backend.dtos.client.ClientPostDto;
 
 import java.util.List;
 import java.util.Optional;

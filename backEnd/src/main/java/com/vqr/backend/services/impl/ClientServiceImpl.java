@@ -1,13 +1,14 @@
 package com.vqr.backend.services.impl;
 
-import com.vqr.backend.dtos.clients.ClientPatchDto;
-import com.vqr.backend.dtos.clients.ClientResponseDto;
-import com.vqr.backend.dtos.clients.ClientPostDto;
+import com.vqr.backend.dtos.client.ClientPatchDto;
+import com.vqr.backend.dtos.client.ClientPostDto;
+import com.vqr.backend.dtos.client.ClientResponseDto;
 import com.vqr.backend.models.ClientModel;
 import com.vqr.backend.repositories.ClientRepository;
 import com.vqr.backend.services.ClientService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class ClientServiceImpl implements ClientService {
         List<ClientModel> foundClients;
         if (name != null) {
             foundClients = clientRepository.findAllByNameContainingIgnoreCase(name);
-        }else{
+        } else {
             foundClients = clientRepository.findAll();
         }
         List<ClientResponseDto> response = new ArrayList<>();
@@ -50,26 +51,26 @@ public class ClientServiceImpl implements ClientService {
         return response;
     }
 
-    public Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData){
+    public Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData) {
         Optional<ClientModel> clientToBeModified = clientRepository.findById(id);
-        if(clientToBeModified.isEmpty()){
+        if (clientToBeModified.isEmpty()) {
             return Optional.empty();
         }
-        if(clientData.name() != null){
+        if (clientData.name() != null) {
             clientToBeModified.get().setName(clientData.name());
         }
-        if(clientData.email() != null){
+        if (clientData.email() != null) {
             clientToBeModified.get().setEmail(clientData.email());
         }
-        if(clientData.phoneNumber() != null){
+        if (clientData.phoneNumber() != null) {
             clientToBeModified.get().setPhoneNumber(clientData.phoneNumber());
         }
         return Optional.of(createDtoResponse(clientRepository.save(clientToBeModified.get())));
     }
 
-    public Boolean deleteClient(UUID id){
+    public Boolean deleteClient(UUID id) {
         Optional<ClientModel> clientToBeDeleted = clientRepository.findById(id);
-        if(clientToBeDeleted.isEmpty()){
+        if (clientToBeDeleted.isEmpty()) {
             return false;
         }
         clientRepository.deleteById(id);

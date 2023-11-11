@@ -1,4 +1,4 @@
-package com.vqr.backend.dtos.clients;
+package com.vqr.backend.dtos.client;
 
 import java.util.UUID;
 

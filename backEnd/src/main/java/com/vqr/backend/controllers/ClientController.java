@@ -1,8 +1,8 @@
 package com.vqr.backend.controllers;
 
-import com.vqr.backend.dtos.clients.ClientPatchDto;
-import com.vqr.backend.dtos.clients.ClientPostDto;
-import com.vqr.backend.dtos.clients.ClientResponseDto;
+import com.vqr.backend.dtos.client.ClientPatchDto;
+import com.vqr.backend.dtos.client.ClientPostDto;
+import com.vqr.backend.dtos.client.ClientResponseDto;
 import com.vqr.backend.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

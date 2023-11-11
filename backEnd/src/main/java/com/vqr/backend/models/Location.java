@@ -9,7 +9,12 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Embeddable
-public class Locality{
+public class Location {
     private String county;
     private String state;
+
+    public Location(String county, String state) {
+        this.county = county;
+        this.state = state;
+    }
 }

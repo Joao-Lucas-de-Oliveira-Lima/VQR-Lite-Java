@@ -1,9 +1,11 @@
-package com.vqr.backend.dtos.clients;
+package com.vqr.backend.dtos.client;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record ClientPatchDto(
+public record ClientPostDto(
+        @NotBlank(message = "name not given")
         @Pattern(regexp = ".*[a-zA-Z]+.*")
         String name,
         @Email
