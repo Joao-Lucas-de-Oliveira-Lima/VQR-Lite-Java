@@ -3,6 +3,7 @@ package com.vqr.backend.services;
 import com.vqr.backend.dtos.client.ClientPatchDto;
 import com.vqr.backend.dtos.client.ClientResponseDto;
 import com.vqr.backend.dtos.client.ClientPostDto;
+import com.vqr.backend.models.ClientModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,8 @@ public interface ClientService {
     Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData);
 
     Boolean deleteClient(UUID id);
+
+    Optional<ClientModel> findForAnEventOwner(UUID id);
+
+    ClientResponseDto convertToClientResponseDto(ClientModel clientData);
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/events")
 public class EventController {
@@ -23,8 +25,10 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<EventResponseDto> saveClient(@RequestBody @Valid EventPostDto eventData) {
-        EventResponseDto result = eventService.saveNewEvent(eventData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        Optional<EventResponseDto> result = eventService.saveNewEvent(eventData);
+        if(result.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(result.get());
     }
-
 }

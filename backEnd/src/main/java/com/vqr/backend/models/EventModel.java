@@ -24,6 +24,7 @@ public class EventModel implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "event_id")
     private UUID id;
     private String name;
     private int numberOfInitialPasswords;
@@ -31,13 +32,21 @@ public class EventModel implements Serializable {
     private LocalDateTime beginDateTime;
     @Embedded
     private Location location;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private ClientModel eventOwner;
 
-    public EventModel(String name, int numberOfInitialEventPasswords, Location location) {
+    public EventModel(
+            String name,
+            int numberOfInitialEventPasswords,
+            LocalDateTime beginDateTime,
+            Location location, ClientModel eventOwner) {
         this.name = name;
         this.numberOfInitialPasswords = numberOfInitialEventPasswords;
         this.numberOfTotalPasswords = numberOfInitialEventPasswords;
         this.beginDateTime = beginDateTime;
         this.location = location;
+        this.eventOwner = eventOwner;
     }
 
     public EventModel() {

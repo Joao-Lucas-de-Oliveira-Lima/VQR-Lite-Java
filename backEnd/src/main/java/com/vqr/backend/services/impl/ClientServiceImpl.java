@@ -26,7 +26,7 @@ public class ClientServiceImpl implements ClientService {
         ClientModel clientToSave = new ClientModel();
         BeanUtils.copyProperties(clientData, clientToSave);
         clientToSave = clientRepository.save(clientToSave);
-        return createDtoResponse(clientToSave);
+        return convertToClientResponseDto(clientToSave);
     }
 
     public Optional<ClientResponseDto> findClientById(UUID id) {
@@ -34,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
         if (clientToBeFound.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(createDtoResponse(clientToBeFound.get()));
+        return Optional.of(convertToClientResponseDto(clientToBeFound.get()));
     }
 
     public List<ClientResponseDto> findClients(String name) {
@@ -46,7 +46,7 @@ public class ClientServiceImpl implements ClientService {
         }
         List<ClientResponseDto> response = new ArrayList<>();
         foundClients.forEach(client -> {
-            response.add(createDtoResponse(client));
+            response.add(convertToClientResponseDto(client));
         });
         return response;
     }
@@ -65,7 +65,7 @@ public class ClientServiceImpl implements ClientService {
         if (clientData.phoneNumber() != null) {
             clientToBeModified.get().setPhoneNumber(clientData.phoneNumber());
         }
-        return Optional.of(createDtoResponse(clientRepository.save(clientToBeModified.get())));
+        return Optional.of(convertToClientResponseDto(clientRepository.save(clientToBeModified.get())));
     }
 
     public Boolean deleteClient(UUID id) {
@@ -77,7 +77,15 @@ public class ClientServiceImpl implements ClientService {
         return true;
     }
 
-    private static ClientResponseDto createDtoResponse(ClientModel clientData) {
+    public Optional<ClientModel> findForAnEventOwner(UUID id){
+        Optional<ClientModel> clientToBeFound = clientRepository.findById(id);
+        if(clientToBeFound.isEmpty()){
+            return Optional.empty();
+        }
+        return clientToBeFound;
+    }
+
+    public ClientResponseDto convertToClientResponseDto(ClientModel clientData) {
         return new ClientResponseDto(
                 clientData.getId(),
                 clientData.getName(),

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record EventPostDto(
         @NotBlank
@@ -20,5 +21,7 @@ public record EventPostDto(
         LocalDateTime beginDateTime,
         @NotNull
         @Valid
-        LocationDto location) {
+        LocationDto location,
+        @NotNull
+        UUID eventOwnerId) {
 }

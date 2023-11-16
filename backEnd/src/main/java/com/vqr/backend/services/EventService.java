@@ -2,7 +2,11 @@ package com.vqr.backend.services;
 
 import com.vqr.backend.dtos.event.EventPostDto;
 import com.vqr.backend.dtos.event.EventResponseDto;
+import com.vqr.backend.models.EventModel;
+
+import java.util.Optional;
 
 public interface EventService {
-    EventResponseDto saveNewEvent(EventPostDto eventData);
+    Optional<EventResponseDto> saveNewEvent(EventPostDto eventData);
+    EventResponseDto converterToEventResponseDto(EventModel eventData);
 }
