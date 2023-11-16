@@ -12,6 +12,7 @@ import com.vqr.backend.services.EventService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -43,6 +44,14 @@ public class EventServiceImpl implements EventService {
                 eventOwner.get()
         );
         return Optional.of(converterToEventResponseDto(eventRepository.save(eventToBeSaved)));
+    }
+
+    public Optional<EventResponseDto> findEventById(UUID id){
+        Optional<EventModel> eventToBeFound = eventRepository.findById(id);
+        if(eventToBeFound.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(converterToEventResponseDto(eventToBeFound.get()));
     }
 
     public EventResponseDto converterToEventResponseDto(EventModel eventData) {
