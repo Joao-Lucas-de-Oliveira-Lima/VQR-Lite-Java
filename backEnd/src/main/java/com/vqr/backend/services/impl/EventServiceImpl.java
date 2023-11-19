@@ -11,6 +11,8 @@ import com.vqr.backend.services.ClientService;
 import com.vqr.backend.services.EventService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +54,17 @@ public class EventServiceImpl implements EventService {
             return Optional.empty();
         }
         return Optional.of(converterToEventResponseDto(eventToBeFound.get()));
+    }
+
+    public List<EventResponseDto> findEvents(){
+        List<EventModel> foundEvents = eventRepository.findAll();
+        List<EventResponseDto> response = new ArrayList<EventResponseDto>();
+        foundEvents.forEach(
+                event -> {
+                    response.add(converterToEventResponseDto(event));
+                }
+        );
+        return response;
     }
 
     public EventResponseDto converterToEventResponseDto(EventModel eventData) {
