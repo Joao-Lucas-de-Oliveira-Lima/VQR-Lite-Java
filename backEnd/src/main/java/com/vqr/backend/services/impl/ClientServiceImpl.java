@@ -26,7 +26,7 @@ public class ClientServiceImpl implements ClientService {
         ClientModel clientToSave = new ClientModel();
         BeanUtils.copyProperties(clientData, clientToSave);
         clientToSave = clientRepository.save(clientToSave);
-        return convertToClientResponseDto(clientToSave);
+        return clientToSave.convertToResponseDto();
     }
 
     public Optional<ClientResponseDto> findClientById(UUID id) {
@@ -34,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
         if (clientToBeFound.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(convertToClientResponseDto(clientToBeFound.get()));
+        return Optional.of(clientToBeFound.get().convertToResponseDto());
     }
 
     public List<ClientResponseDto> findClients(String name) {
@@ -44,11 +44,11 @@ public class ClientServiceImpl implements ClientService {
         } else {
             foundClients = clientRepository.findAll();
         }
-        List<ClientResponseDto> response = new ArrayList<>();
+        List<ClientResponseDto> foundClientsDto = new ArrayList<>();
         foundClients.forEach(client -> {
-            response.add(convertToClientResponseDto(client));
+            foundClientsDto.add(client.convertToResponseDto());
         });
-        return response;
+        return foundClientsDto;
     }
 
     public Optional<ClientResponseDto> modifyClient(UUID id, ClientPatchDto clientData) {
@@ -65,7 +65,7 @@ public class ClientServiceImpl implements ClientService {
         if (clientData.phoneNumber() != null) {
             clientToBeModified.get().setPhoneNumber(clientData.phoneNumber());
         }
-        return Optional.of(convertToClientResponseDto(clientRepository.save(clientToBeModified.get())));
+        return Optional.of(clientRepository.save(clientToBeModified.get()).convertToResponseDto());
     }
 
     public Boolean deleteClient(UUID id) {
@@ -83,13 +83,5 @@ public class ClientServiceImpl implements ClientService {
             return Optional.empty();
         }
         return clientToBeFound;
-    }
-
-    public ClientResponseDto convertToClientResponseDto(ClientModel clientData) {
-        return new ClientResponseDto(
-                clientData.getId(),
-                clientData.getName(),
-                clientData.getEmail(),
-                clientData.getPhoneNumber());
     }
 }

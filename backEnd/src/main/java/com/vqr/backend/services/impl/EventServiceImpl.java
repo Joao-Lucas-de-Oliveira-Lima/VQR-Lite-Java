@@ -1,5 +1,6 @@
 package com.vqr.backend.services.impl;
 
+import com.vqr.backend.dtos.event.EventPatchDto;
 import com.vqr.backend.dtos.event.EventPostDto;
 import com.vqr.backend.dtos.event.EventResponseDto;
 import com.vqr.backend.dtos.location.LocationDto;
@@ -45,7 +46,7 @@ public class EventServiceImpl implements EventService {
                 ),
                 eventOwner.get()
         );
-        return Optional.of(converterToEventResponseDto(eventRepository.save(eventToBeSaved)));
+        return Optional.of(eventRepository.save(eventToBeSaved).convertToResponseDto());
     }
 
     public Optional<EventResponseDto> findEventById(UUID id){
@@ -53,32 +54,28 @@ public class EventServiceImpl implements EventService {
         if(eventToBeFound.isEmpty()){
             return Optional.empty();
         }
-        return Optional.of(converterToEventResponseDto(eventToBeFound.get()));
+        return Optional.of(eventToBeFound.get().convertToResponseDto());
     }
 
     public List<EventResponseDto> findEvents(){
         List<EventModel> foundEvents = eventRepository.findAll();
-        List<EventResponseDto> response = new ArrayList<EventResponseDto>();
+        List<EventResponseDto> foundEventsDto = new ArrayList<EventResponseDto>();
         foundEvents.forEach(
                 event -> {
-                    response.add(converterToEventResponseDto(event));
+                    foundEventsDto.add(event.convertToResponseDto());
                 }
         );
-        return response;
+        return foundEventsDto;
     }
 
-    public EventResponseDto converterToEventResponseDto(EventModel eventData) {
-        return new EventResponseDto(
-                eventData.getId(),
-                eventData.getName(),
-                eventData.getNumberOfInitialPasswords(),
-                eventData.getNumberOfTotalPasswords(),
-                eventData.getBeginDateTime(),
-                new LocationDto(
-                        eventData.getLocation().getCounty(),
-                        eventData.getLocation().getState()
-                ),
-                clientService.convertToClientResponseDto(eventData.getEventOwner())
-        );
+    public Optional<EventResponseDto> modifyEvent(UUID id, EventPatchDto eventData){
+        Optional<EventModel> eventToBeModified = eventRepository.findById(id);
+        if(eventToBeModified.isEmpty()){
+            return Optional.empty();
+        }
+        if(eventData.name() != null){
+            eventToBeModified.get().setName(eventData.name());
+        }
+        return Optional.of(eventRepository.save(eventToBeModified.get()).convertToResponseDto());
     }
 }

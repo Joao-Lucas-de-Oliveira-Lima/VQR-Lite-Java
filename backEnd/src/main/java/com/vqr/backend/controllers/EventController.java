@@ -1,5 +1,6 @@
 package com.vqr.backend.controllers;
 
+import com.vqr.backend.dtos.event.EventPatchDto;
 import com.vqr.backend.dtos.event.EventPostDto;
 import com.vqr.backend.dtos.event.EventResponseDto;
 import com.vqr.backend.services.EventService;
@@ -42,5 +43,16 @@ public class EventController {
     public ResponseEntity<List<EventResponseDto>> getEvents(){
         List<EventResponseDto> response = eventService.findEvents();
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EventResponseDto> modifyEvent(
+            @PathVariable(name = "id")UUID id,
+            @RequestBody @Valid EventPatchDto eventData){
+        Optional<EventResponseDto> response = eventService.modifyEvent(id, eventData);
+        if(response.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response.get());
     }
 }

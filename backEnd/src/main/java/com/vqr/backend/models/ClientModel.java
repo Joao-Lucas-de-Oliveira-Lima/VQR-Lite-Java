@@ -1,5 +1,6 @@
 package com.vqr.backend.models;
 
+import com.vqr.backend.dtos.client.ClientResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,5 +31,12 @@ public class ClientModel implements Serializable {
     @OneToMany(mappedBy = "eventOwner")
     private List<EventModel> events;
 
-    //todo:relação com a tabela eventos
+    //todo add event list in response
+    public ClientResponseDto convertToResponseDto(){
+        return new ClientResponseDto(
+                this.id,
+                this.name,
+                this.email,
+                this.phoneNumber);
+    }
 }

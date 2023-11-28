@@ -1,6 +1,9 @@
 package com.vqr.backend.models;
 
 
+import com.vqr.backend.dtos.client.ClientResponseDto;
+import com.vqr.backend.dtos.event.EventResponseDto;
+import com.vqr.backend.dtos.location.LocationDto;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,5 +54,21 @@ public class EventModel implements Serializable {
 
     public EventModel() {
         this.location = new Location();
+    }
+
+    //todo create response dto for location
+    public EventResponseDto convertToResponseDto(){
+        return new EventResponseDto(
+                this.id,
+                this.name,
+                this.numberOfInitialPasswords,
+                this.numberOfTotalPasswords,
+                this.beginDateTime,
+                new LocationDto(
+                        this.location.getCounty(),
+                        this.location.getState()
+                ),
+                this.eventOwner.convertToResponseDto()
+        );
     }
 }

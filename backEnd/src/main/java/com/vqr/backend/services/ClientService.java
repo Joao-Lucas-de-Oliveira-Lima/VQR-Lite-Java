@@ -21,6 +21,4 @@ public interface ClientService {
     Boolean deleteClient(UUID id);
 
     Optional<ClientModel> findForAnEventOwner(UUID id);
-
-    ClientResponseDto convertToClientResponseDto(ClientModel clientData);
 }
