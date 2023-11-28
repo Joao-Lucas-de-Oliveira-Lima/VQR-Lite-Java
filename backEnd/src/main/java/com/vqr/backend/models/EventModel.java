@@ -33,6 +33,7 @@ public class EventModel implements Serializable {
     private String name;
     private int numberOfInitialPasswords;
     private int numberOfTotalPasswords;
+    private int totalNumberOfTimesMorePasswordsWereAdded;
     private LocalDateTime beginDateTime;
     @Embedded
     private Location location;
@@ -50,6 +51,7 @@ public class EventModel implements Serializable {
         this.name = name;
         this.numberOfInitialPasswords = numberOfInitialEventPasswords;
         this.numberOfTotalPasswords = numberOfInitialEventPasswords;
+        this.totalNumberOfTimesMorePasswordsWereAdded = 0;
         this.beginDateTime = beginDateTime;
         this.location = location;
         this.eventOwner = eventOwner;
@@ -66,6 +68,7 @@ public class EventModel implements Serializable {
                 this.name,
                 this.numberOfInitialPasswords,
                 this.numberOfTotalPasswords,
+                this.totalNumberOfTimesMorePasswordsWereAdded,
                 this.beginDateTime,
                 new LocationDto(
                         this.location.getCounty(),

@@ -52,9 +52,20 @@ public class PasswordServiceImpl implements PasswordService {
         return passwords;
     }
 
-    public Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId){
+    public Boolean increaseTheNumberOfAvailableEventPasswords(
+            int numberOfPasswordsToBeAdded,
+            EventModel eventToBeUsed) {
+        for (int quantity = eventToBeUsed.getNumberOfTotalPasswords() + 1;
+             quantity <= eventToBeUsed.getNumberOfTotalPasswords() + numberOfPasswordsToBeAdded;
+             quantity++) {
+            passwordRepository.save(new PasswordModel(quantity, eventToBeUsed));
+        }
+        return true;
+    }
+
+    public Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId) {
         Optional<EventModel> eventToBeFound = eventRepository.findById(eventId);
-        if(eventToBeFound.isEmpty()){
+        if (eventToBeFound.isEmpty()) {
             return Optional.empty();
         }
         List<PasswordModel> passwords = passwordRepository.findAllByEventToBeUsed(eventToBeFound.get());

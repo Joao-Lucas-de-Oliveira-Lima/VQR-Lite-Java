@@ -4,8 +4,6 @@ import com.vqr.backend.dtos.password.PasswordPostDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
 import com.vqr.backend.models.EventModel;
 import com.vqr.backend.models.PasswordModel;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +14,10 @@ public interface PasswordService {
 
     List<PasswordModel> createListOfEmptyPasswordsForStartingAnEvent(
             int numberOfPasswordsToBeCreated,
+            EventModel eventToBeUsed);
+
+    Boolean increaseTheNumberOfAvailableEventPasswords(
+            int numberOfPasswordsToBeAdded,
             EventModel eventToBeUsed);
 
     Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId);

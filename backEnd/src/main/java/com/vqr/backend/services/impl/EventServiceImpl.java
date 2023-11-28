@@ -76,6 +76,7 @@ public class EventServiceImpl implements EventService {
         return foundEventsDto;
     }
 
+    //todo: improve copying of common attributes
     public Optional<EventResponseDto> modifyEvent(UUID id, EventPatchDto eventData) {
         Optional<EventModel> eventToBeModified = eventRepository.findById(id);
         if (eventToBeModified.isEmpty()) {
@@ -83,6 +84,32 @@ public class EventServiceImpl implements EventService {
         }
         if (eventData.name() != null) {
             eventToBeModified.get().setName(eventData.name());
+        }
+        if(eventData.beginDateTime() != null){
+            eventToBeModified.get().setBeginDateTime(eventData.beginDateTime());
+        }
+        if(eventData.location() != null){
+            if(eventData.location().county() != null){
+                eventToBeModified.get().getLocation().setCounty(eventData.location().county());
+            }
+            if(eventData.location().state() != null){
+                eventToBeModified.get().getLocation().setState(eventData.location().state());
+            }
+        }
+        if(eventData.numberOfPasswordsToBeAdded().isPresent()){
+            int numberOfPasswordsToBeAdded = eventData.numberOfPasswordsToBeAdded().get();
+            if(numberOfPasswordsToBeAdded > 0){
+                passwordService.increaseTheNumberOfAvailableEventPasswords(
+                        numberOfPasswordsToBeAdded,
+                        eventToBeModified.get()
+                );
+                eventToBeModified.get().setNumberOfTotalPasswords(
+                        eventToBeModified.get().getNumberOfTotalPasswords() + numberOfPasswordsToBeAdded
+                );
+                eventToBeModified.get().setTotalNumberOfTimesMorePasswordsWereAdded(
+                        eventToBeModified.get().getTotalNumberOfTimesMorePasswordsWereAdded() + 1
+                );
+            }
         }
         return Optional.of(eventRepository.save(eventToBeModified.get()).convertToResponseDto());
     }
