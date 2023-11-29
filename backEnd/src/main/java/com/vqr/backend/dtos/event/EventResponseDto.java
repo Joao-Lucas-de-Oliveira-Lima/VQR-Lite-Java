@@ -12,6 +12,7 @@ public record EventResponseDto(
         String name,
         int numberOfInitialEventPasswords,
         int numberOfTotalEventPasswords,
+        int totalNumberOfTimesMorePasswordsWereAdded,
         LocalDateTime beginDateTime,
         LocationDto location,
         ClientResponseDto eventOwner) {

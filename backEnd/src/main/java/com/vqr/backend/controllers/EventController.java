@@ -31,6 +31,7 @@ public class EventController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(result.get());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<EventResponseDto> getEventById(@PathVariable(value = "id") UUID id){
         Optional<EventResponseDto> result = eventService.findEventById(id);
@@ -39,6 +40,7 @@ public class EventController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(result.get());
     }
+
     @GetMapping()
     public ResponseEntity<List<EventResponseDto>> getEvents(){
         List<EventResponseDto> response = eventService.findEvents();
