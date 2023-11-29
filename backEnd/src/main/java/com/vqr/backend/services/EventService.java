@@ -14,7 +14,7 @@ public interface EventService {
 
     Optional<EventResponseDto> findEventById(UUID id);
 
-    List<EventResponseDto> findEvents();
+    List<EventResponseDto> findEvents(UUID eventOwnerId);
 
     Optional<EventResponseDto> modifyEvent(UUID id, EventPatchDto eventData);
 }

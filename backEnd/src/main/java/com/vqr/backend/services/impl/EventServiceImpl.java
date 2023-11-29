@@ -69,8 +69,16 @@ public class EventServiceImpl implements EventService {
         return Optional.of(eventToBeFound.get().convertToResponseDto());
     }
 
-    public List<EventResponseDto> findEvents() {
-        List<EventModel> foundEvents = eventRepository.findAll();
+    public List<EventResponseDto> findEvents(UUID eventOwnerId) {
+        List<EventModel> foundEvents = new ArrayList<>();
+        if(eventOwnerId != null){
+            Optional<ClientModel> eventOwner = clientService.findForAnEventOwner(eventOwnerId);
+            if(eventOwner.isPresent()){
+                foundEvents = eventRepository.findAllByEventOwner(eventOwner.get());
+            }
+        }else{
+            foundEvents = eventRepository.findAll();
+        }
         List<EventResponseDto> foundEventsDto = new ArrayList<EventResponseDto>();
         foundEvents.forEach(
                 event -> {

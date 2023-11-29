@@ -42,8 +42,10 @@ public class EventController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<EventResponseDto>> getEvents(){
-        List<EventResponseDto> response = eventService.findEvents();
+    public ResponseEntity<List<EventResponseDto>> getEvents(
+            @RequestParam(name = "eventOwnerId", required = false) UUID eventOwnerId
+    ){
+        List<EventResponseDto> response = eventService.findEvents(eventOwnerId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
