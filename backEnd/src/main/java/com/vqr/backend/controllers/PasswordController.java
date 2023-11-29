@@ -1,5 +1,6 @@
 package com.vqr.backend.controllers;
 
+import com.vqr.backend.dtos.password.PasswordPatchDto;
 import com.vqr.backend.dtos.password.PasswordPostDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
 import com.vqr.backend.services.PasswordService;
@@ -31,8 +32,20 @@ public class PasswordController {
 
     @GetMapping()
     public ResponseEntity<List<PasswordResponseDto>> findEventPasswords(
-            @RequestParam(name = "eventId") UUID eventId) {
-        Optional<List<PasswordResponseDto>> result = passwordService.findEventPasswords(eventId);
+            @RequestParam(name = "eventId") UUID eventId,
+            @RequestParam(name = "wasItSold", required = false) Boolean wasItSold) {
+        Optional<List<PasswordResponseDto>> result = passwordService.findEventPasswords(eventId, wasItSold);
+        if(result.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result.get());
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PasswordResponseDto> modifyPassword(
+            @PathVariable(name = "id") UUID id,
+            @RequestBody @Valid PasswordPatchDto passwordData){
+        Optional<PasswordResponseDto> result = passwordService.modifyPassword(id, passwordData);
         if(result.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

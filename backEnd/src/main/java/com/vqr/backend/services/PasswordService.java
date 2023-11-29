@@ -1,5 +1,6 @@
 package com.vqr.backend.services;
 
+import com.vqr.backend.dtos.password.PasswordPatchDto;
 import com.vqr.backend.dtos.password.PasswordPostDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
 import com.vqr.backend.models.EventModel;
@@ -20,5 +21,7 @@ public interface PasswordService {
             int numberOfPasswordsToBeAdded,
             EventModel eventToBeUsed);
 
-    Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId);
+    Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData);
+
+    Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId, Boolean wasItSold);
 }

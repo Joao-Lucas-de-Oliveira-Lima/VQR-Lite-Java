@@ -109,6 +109,8 @@ public class EventServiceImpl implements EventService {
                 eventToBeModified.get().setTotalNumberOfTimesMorePasswordsWereAdded(
                         eventToBeModified.get().getTotalNumberOfTimesMorePasswordsWereAdded() + 1
                 );
+            }else{
+                return Optional.empty();
             }
         }
         return Optional.of(eventRepository.save(eventToBeModified.get()).convertToResponseDto());

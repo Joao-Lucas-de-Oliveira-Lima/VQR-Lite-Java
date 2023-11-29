@@ -1,5 +1,6 @@
 package com.vqr.backend.services.impl;
 
+import com.vqr.backend.dtos.password.PasswordPatchDto;
 import com.vqr.backend.dtos.password.PasswordPostDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
 import com.vqr.backend.models.EventModel;
@@ -63,16 +64,59 @@ public class PasswordServiceImpl implements PasswordService {
         return true;
     }
 
-    public Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId) {
+    public Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId, Boolean wasItSold) {
         Optional<EventModel> eventToBeFound = eventRepository.findById(eventId);
         if (eventToBeFound.isEmpty()) {
             return Optional.empty();
         }
-        List<PasswordModel> passwords = passwordRepository.findAllByEventToBeUsed(eventToBeFound.get());
+        List<PasswordModel> passwords = new ArrayList<>();
+        if(wasItSold != null){
+            if(!wasItSold){
+                passwords = passwordRepository.findAllByEventToBeUsedAndWasItSoldIsFalseOrderByPasswordNumberAsc(eventToBeFound.get());
+            }else{
+                passwords = passwordRepository.findAllByEventToBeUsedAndWasItSoldIsTrueOrderByPasswordNumberAsc(eventToBeFound.get());
+            }
+        }else{
+            passwords = passwordRepository.findAllByEventToBeUsedOrderByPasswordNumberAsc(eventToBeFound.get());
+        }
         List<PasswordResponseDto> passwordsDto = new ArrayList<>();
         passwords.forEach(password -> {
             passwordsDto.add(password.convertToResponseDto());
         });
         return Optional.of(passwordsDto);
+    }
+
+    public Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData){
+        Optional<PasswordModel> passwordToBeModified = passwordRepository.findById(id);
+        if(passwordToBeModified.isEmpty()){
+            return Optional.empty();
+        }
+        if(passwordData.puller() != null){
+            passwordToBeModified.get().setPuller(passwordData.puller());
+        }
+        if(passwordData.pullerHorse() != null){
+            passwordToBeModified.get().setPullerHorse(passwordData.pullerHorse());
+        }
+        if(passwordData.grabber() != null){
+            passwordToBeModified.get().setGrabber(passwordData.grabber());
+        }
+        if(passwordData.grabberHorse() != null){
+            passwordToBeModified.get().setGrabberHorse(passwordData.grabberHorse());
+        }
+        if(passwordData.location() != null){
+            if(passwordData.location().county() != null){
+                passwordToBeModified.get().getLocation().setCounty(passwordData.location().county());
+            }
+            if(passwordData.location().state() != null){
+                passwordToBeModified.get().getLocation().setState(passwordData.location().state());
+            }
+        }
+        if(passwordData.bullTv().isPresent()){
+            passwordToBeModified.get().setBullTv(passwordData.bullTv().get());
+        }
+        if(passwordData.wasItSold().isPresent()){
+            passwordToBeModified.get().setWasItSold(passwordData.wasItSold().get());
+        }
+        return Optional.of(passwordRepository.save(passwordToBeModified.get()).convertToResponseDto());
     }
 }
