@@ -24,4 +24,7 @@ public interface PasswordService {
     Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData);
 
     Optional<List<PasswordResponseDto>> findEventPasswords(UUID eventId, Boolean wasItSold);
+    public Optional<List<PasswordModel>> findEventPasswordsAsModels(UUID eventId);
+
+    Optional<PasswordResponseDto> findPasswordById(UUID id);
 }

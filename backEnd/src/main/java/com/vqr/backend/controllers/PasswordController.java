@@ -43,6 +43,16 @@ public class PasswordController {
         return ResponseEntity.status(HttpStatus.OK).body(result.get());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PasswordResponseDto> findPasswordById(
+            @PathVariable(name = "id") UUID id) {
+        Optional<PasswordResponseDto> result = passwordService.findPasswordById(id);
+        if(result.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result.get());
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<PasswordResponseDto> modifyPassword(
             @PathVariable(name = "id") UUID id,

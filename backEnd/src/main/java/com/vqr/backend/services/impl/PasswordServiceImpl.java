@@ -70,7 +70,7 @@ public class PasswordServiceImpl implements PasswordService {
         if (eventToBeFound.isEmpty()) {
             return Optional.empty();
         }
-        List<PasswordModel> passwords = new ArrayList<>();
+        List<PasswordModel> passwords;
         if (wasItSold != null) {
             if (!wasItSold) {
                 passwords = passwordRepository.findAllByEventToBeUsedAndWasItSoldIsFalseOrderByPasswordNumberAsc(eventToBeFound.get());
@@ -85,6 +85,15 @@ public class PasswordServiceImpl implements PasswordService {
             passwordsDto.add(password.convertToResponseDto());
         });
         return Optional.of(passwordsDto);
+    }
+
+    public Optional<List<PasswordModel>> findEventPasswordsAsModels(UUID eventId) {
+        Optional<EventModel> eventToBeFound = eventRepository.findById(eventId);
+        if (eventToBeFound.isEmpty()) {
+            return Optional.empty();
+        }
+        List<PasswordModel> passwords = passwordRepository.findAllByEventToBeUsedOrderByPasswordNumberAsc(eventToBeFound.get());
+        return Optional.of(passwords);
     }
 
     public Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData) {
@@ -118,10 +127,18 @@ public class PasswordServiceImpl implements PasswordService {
         if (passwordData.wasItSold().isPresent()) {
             passwordToBeModified.get().setWasItSold(passwordData.wasItSold().get());
         }
-        if(passwordData.payment() != null){
+        if (passwordData.payment() != null) {
             passwordToBeModified.get().getPayment().setPaymentMethod(passwordData.payment().paymentMethod());
             passwordToBeModified.get().getPayment().setValue(passwordData.payment().value());
         }
         return Optional.of(passwordRepository.save(passwordToBeModified.get()).convertToResponseDto());
+    }
+
+    public Optional<PasswordResponseDto> findPasswordById(UUID id) {
+        Optional<PasswordModel> passwordToBeFound = passwordRepository.findById(id);
+        if (passwordToBeFound.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(passwordToBeFound.get().convertToResponseDto());
     }
 }

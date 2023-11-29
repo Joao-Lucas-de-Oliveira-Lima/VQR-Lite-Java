@@ -13,6 +13,7 @@ import lombok.ToString;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +43,8 @@ public class EventModel implements Serializable {
     private ClientModel eventOwner;
     @OneToMany(mappedBy = "eventToBeUsed")
     private List<PasswordModel> passwords;
+    @OneToOne(mappedBy = "event")
+    FinanceModel finance;
 
     public EventModel(
             String name,

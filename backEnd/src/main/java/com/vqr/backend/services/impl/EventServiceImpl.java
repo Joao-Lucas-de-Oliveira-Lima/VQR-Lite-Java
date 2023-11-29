@@ -9,6 +9,7 @@ import com.vqr.backend.models.Location;
 import com.vqr.backend.repositories.EventRepository;
 import com.vqr.backend.services.ClientService;
 import com.vqr.backend.services.EventService;
+import com.vqr.backend.services.FinanceService;
 import com.vqr.backend.services.PasswordService;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +24,21 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final PasswordService passwordService;
     private final ClientService clientService;
+    private final FinanceService financeService;
 
     public EventServiceImpl(
             EventRepository eventRepository,
             ClientService clientService,
-            PasswordService passwordService) {
+            PasswordService passwordService,
+            FinanceService financeService) {
         this.eventRepository = eventRepository;
         this.clientService = clientService;
         this.passwordService = passwordService;
+        this.financeService = financeService;
     }
 
     //todo: decouple knowledge from the model attributes
     public Optional<EventResponseDto> saveNewEvent(EventPostDto eventData) {
-        System.out.println(eventData.toString());
         Optional<ClientModel> eventOwner = clientService.findForAnEventOwner(eventData.eventOwnerId());
         if (eventOwner.isEmpty()) {
             return Optional.empty();
@@ -54,6 +57,7 @@ public class EventServiceImpl implements EventService {
         passwordService.createListOfEmptyPasswordsForStartingAnEvent(
                 eventToBeSaved.getNumberOfInitialPasswords(),
                 savedEvent);
+        financeService.createFinance(savedEvent);
         return Optional.of(eventRepository.save(eventToBeSaved).convertToResponseDto());
     }
 
