@@ -1,10 +1,8 @@
 package com.vqr.backend.services.impl;
 
 import com.vqr.backend.dtos.password.PasswordPatchDto;
-import com.vqr.backend.dtos.password.PasswordPostDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
 import com.vqr.backend.models.EventModel;
-import com.vqr.backend.models.Location;
 import com.vqr.backend.models.PasswordModel;
 import com.vqr.backend.repositories.EventRepository;
 import com.vqr.backend.repositories.PasswordRepository;
@@ -27,6 +25,7 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     //todo: decouple knowledge from the model attributes
+    /*
     public PasswordResponseDto saveNewPassword(PasswordPostDto passwordData) {
         PasswordModel passwordToSave = new PasswordModel(
                 passwordData.puller(),
@@ -43,23 +42,25 @@ public class PasswordServiceImpl implements PasswordService {
         return passwordRepository.save(passwordToSave).convertToResponseDto();
     }
 
+     */
+
     public List<PasswordModel> createListOfEmptyPasswordsForStartingAnEvent(
             int numberOfPasswordsToBeCreated,
-            EventModel eventToBeUsed) {
+            EventModel event) {
         List<PasswordModel> passwords = new ArrayList<>();
         for (int quantity = 1; quantity <= numberOfPasswordsToBeCreated; quantity++) {
-            passwords.add(passwordRepository.save(new PasswordModel(quantity, eventToBeUsed)));
+            passwords.add(passwordRepository.save(new PasswordModel(quantity, event)));
         }
         return passwords;
     }
 
     public Boolean increaseTheNumberOfAvailableEventPasswords(
             int numberOfPasswordsToBeAdded,
-            EventModel eventToBeUsed) {
-        for (int quantity = eventToBeUsed.getNumberOfTotalPasswords() + 1;
-             quantity <= eventToBeUsed.getNumberOfTotalPasswords() + numberOfPasswordsToBeAdded;
+            EventModel event) {
+        for (int quantity = event.getNumberOfTotalPasswords() + 1;
+             quantity <= event.getNumberOfTotalPasswords() + numberOfPasswordsToBeAdded;
              quantity++) {
-            passwordRepository.save(new PasswordModel(quantity, eventToBeUsed));
+            passwordRepository.save(new PasswordModel(quantity, event));
         }
         return true;
     }
@@ -70,13 +71,13 @@ public class PasswordServiceImpl implements PasswordService {
             return Optional.empty();
         }
         List<PasswordModel> passwords = new ArrayList<>();
-        if(wasItSold != null){
-            if(!wasItSold){
+        if (wasItSold != null) {
+            if (!wasItSold) {
                 passwords = passwordRepository.findAllByEventToBeUsedAndWasItSoldIsFalseOrderByPasswordNumberAsc(eventToBeFound.get());
-            }else{
+            } else {
                 passwords = passwordRepository.findAllByEventToBeUsedAndWasItSoldIsTrueOrderByPasswordNumberAsc(eventToBeFound.get());
             }
-        }else{
+        } else {
             passwords = passwordRepository.findAllByEventToBeUsedOrderByPasswordNumberAsc(eventToBeFound.get());
         }
         List<PasswordResponseDto> passwordsDto = new ArrayList<>();
@@ -86,36 +87,40 @@ public class PasswordServiceImpl implements PasswordService {
         return Optional.of(passwordsDto);
     }
 
-    public Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData){
+    public Optional<PasswordResponseDto> modifyPassword(UUID id, PasswordPatchDto passwordData) {
         Optional<PasswordModel> passwordToBeModified = passwordRepository.findById(id);
-        if(passwordToBeModified.isEmpty()){
+        if (passwordToBeModified.isEmpty()) {
             return Optional.empty();
         }
-        if(passwordData.puller() != null){
+        if (passwordData.puller() != null) {
             passwordToBeModified.get().setPuller(passwordData.puller());
         }
-        if(passwordData.pullerHorse() != null){
+        if (passwordData.pullerHorse() != null) {
             passwordToBeModified.get().setPullerHorse(passwordData.pullerHorse());
         }
-        if(passwordData.grabber() != null){
+        if (passwordData.grabber() != null) {
             passwordToBeModified.get().setGrabber(passwordData.grabber());
         }
-        if(passwordData.grabberHorse() != null){
+        if (passwordData.grabberHorse() != null) {
             passwordToBeModified.get().setGrabberHorse(passwordData.grabberHorse());
         }
-        if(passwordData.location() != null){
-            if(passwordData.location().county() != null){
+        if (passwordData.location() != null) {
+            if (passwordData.location().county() != null) {
                 passwordToBeModified.get().getLocation().setCounty(passwordData.location().county());
             }
-            if(passwordData.location().state() != null){
+            if (passwordData.location().state() != null) {
                 passwordToBeModified.get().getLocation().setState(passwordData.location().state());
             }
         }
-        if(passwordData.bullTv().isPresent()){
+        if (passwordData.bullTv().isPresent()) {
             passwordToBeModified.get().setBullTv(passwordData.bullTv().get());
         }
-        if(passwordData.wasItSold().isPresent()){
+        if (passwordData.wasItSold().isPresent()) {
             passwordToBeModified.get().setWasItSold(passwordData.wasItSold().get());
+        }
+        if(passwordData.payment() != null){
+            passwordToBeModified.get().getPayment().setPaymentMethod(passwordData.payment().paymentMethod());
+            passwordToBeModified.get().getPayment().setValue(passwordData.payment().value());
         }
         return Optional.of(passwordRepository.save(passwordToBeModified.get()).convertToResponseDto());
     }

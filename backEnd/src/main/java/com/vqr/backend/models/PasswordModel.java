@@ -2,11 +2,14 @@ package com.vqr.backend.models;
 
 import com.vqr.backend.dtos.location.LocationDto;
 import com.vqr.backend.dtos.password.PasswordResponseDto;
+import com.vqr.backend.dtos.payment.PaymentResponseDto;
+import com.vqr.backend.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -32,10 +35,13 @@ public class PasswordModel implements Serializable {
     private int passwordNumber;
     private boolean bullTv;
     private boolean wasItSold;
+    @Embedded
+    private Payment payment;
     @ManyToOne
     @JoinColumn(name = "event_id")
     private EventModel eventToBeUsed;
 
+    /*
     public PasswordModel(
             String puller,
             String pullerHorse,
@@ -54,6 +60,7 @@ public class PasswordModel implements Serializable {
         this.bullTv = bullTv;
         this.wasItSold = wasItSold;
     }
+    */
 
     public PasswordModel(int passwordNumber, EventModel eventToBeUsed) {
         this.puller = null;
@@ -67,6 +74,10 @@ public class PasswordModel implements Serializable {
         this.passwordNumber = passwordNumber;
         this.bullTv = false;
         this.wasItSold = false;
+        this.payment = new Payment(
+                PaymentMethod.NONE,
+                new BigDecimal(0)
+        );
         this.eventToBeUsed = eventToBeUsed;
     }
 
@@ -83,7 +94,11 @@ public class PasswordModel implements Serializable {
                 ),
                 this.passwordNumber,
                 this.bullTv,
-                this.wasItSold
+                this.wasItSold,
+                new PaymentResponseDto(
+                        this.payment.getPaymentMethod(),
+                        this.payment.getValue()
+                )
         );
     }
 }

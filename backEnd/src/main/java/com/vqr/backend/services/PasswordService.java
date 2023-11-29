@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PasswordService {
-    PasswordResponseDto saveNewPassword(PasswordPostDto passwordData);
+    //PasswordResponseDto saveNewPassword(PasswordPostDto passwordData);
 
     List<PasswordModel> createListOfEmptyPasswordsForStartingAnEvent(
             int numberOfPasswordsToBeCreated,

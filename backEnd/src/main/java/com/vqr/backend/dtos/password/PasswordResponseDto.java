@@ -1,6 +1,7 @@
 package com.vqr.backend.dtos.password;
 
 import com.vqr.backend.dtos.location.LocationDto;
+import com.vqr.backend.dtos.payment.PaymentResponseDto;
 
 import java.util.UUID;
 
@@ -13,5 +14,6 @@ public record PasswordResponseDto(
         LocationDto location,
         int passwordNumber,
         boolean bullTv,
-        boolean wasItSold) {
+        boolean wasItSold,
+        PaymentResponseDto payment) {
 }

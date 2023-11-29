@@ -22,13 +22,15 @@ public class PasswordController {
         this.passwordService = passwordService;
     }
 
-    //For testing
+    /*
     @PostMapping
     public ResponseEntity<PasswordResponseDto> saveNewPassword(
             @Valid @RequestBody PasswordPostDto passwordData) {
         PasswordResponseDto result = passwordService.saveNewPassword(passwordData);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+
+     */
 
     @GetMapping()
     public ResponseEntity<List<PasswordResponseDto>> findEventPasswords(
