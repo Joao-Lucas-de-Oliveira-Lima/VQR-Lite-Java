@@ -1,0 +1,28 @@
+.tickets_list {
+
+    align-self: center;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(10, 34px);
+
+    width: var(--ticket_list_size_sell_w);
+    height: var(--ticket_list_size_sell_h);
+    
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+
+    overflow: auto;
+}
+
+.ticket_box {
+    justify-content: center;
+
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.occupied {
+    background-color: red;
+}
+

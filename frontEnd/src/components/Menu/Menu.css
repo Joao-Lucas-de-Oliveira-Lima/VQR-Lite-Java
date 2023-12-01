@@ -1,0 +1,88 @@
+#menu_container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+#menu_title {
+    height: 85px;
+
+    align-items: end;
+    align-self: center;
+}
+
+#sell_tickets_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 47px;
+}
+
+#remove_tickets_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 26px;
+}
+
+#tickets_info_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 26px;
+}
+
+#schedule_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 26px;
+}
+
+#create_stuff_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 26px;
+}
+
+#finance_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    position: relative;
+    margin-top: 26px;
+}
+
+#nearest_events_button {
+    display: flex;
+    width: 289px;
+    height: 56.11px;
+
+    align-self: end;
+
+    position: relative;
+    right: 57px;
+    margin-top: 148px;
+}
+
+#menu_exit {
+    position: relative;
+    left: 37px;
+    top: 754px;
+
+    width: 209px;
+    height: 60px;
+}
