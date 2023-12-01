@@ -1,0 +1,21 @@
+.list_large {
+    overflow: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    align-self: center;
+
+    max-width: 1130px;
+    min-height: 127px;
+    max-height: 623px;
+
+    margin-left: 45px;
+    margin-right: 19px;
+
+    padding-top: 13px;
+    padding-bottom: 14px;
+
+    background: #EFEEEE;
+    border-radius: 6px;
+}

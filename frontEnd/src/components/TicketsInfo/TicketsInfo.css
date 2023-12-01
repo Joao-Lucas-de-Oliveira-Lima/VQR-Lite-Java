@@ -1,0 +1,15 @@
+.list {
+    overflow: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-height: 127px;
+    max-height: 622px;
+
+    margin-left: 45px;
+    margin-right: 19px;
+
+    background: #EFEEEE;
+    border-radius: 6px;
+}

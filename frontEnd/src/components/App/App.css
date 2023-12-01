@@ -1,0 +1,13 @@
+.app {
+    align-self: center;
+    min-width: 1200px;
+    max-width: 1200px;
+    min-height: 800px;
+    max-height: 1080;
+    width: 62%;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    /* background-color: red; */
+    /* border: 1px solid black; */
+}
